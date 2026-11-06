@@ -21,10 +21,25 @@ function toggleService(id) {
     state.selected.add(id);
   }
   state.date = ''; state.time = '';
-  render();
+  updateServiceSelection();
 }
 function renderServices() {
-  return `<div class="step-intro"><span>ETAPA 01 / 05</span><h2>Escolha seus serviços</h2><p>Selecione um ou mais. Corte + Barba substitui os serviços separados.</p></div><div class="booking-service-grid">${config.services.map(service => `<button type="button" class="booking-service-card ${state.selected.has(service.id) ? 'selected' : ''}" data-select-service="${service.id}" aria-pressed="${state.selected.has(service.id)}"><img src="${service.image}" alt="Foto ilustrativa de ${service.name.toLowerCase()} em um homem" loading="lazy" /><span class="booking-service-content"><span class="booking-service-name">${service.name}</span><span class="booking-service-price">${service.price === null ? 'Valor sob consulta' : money(service.price)}</span></span><span class="booking-check" aria-hidden="true">${state.selected.has(service.id) ? '✓' : '+'}</span></button>`).join('')}</div><p class="photo-note">Fotos ilustrativas dos serviços.</p>`;
+  return `<div class="step-intro service-step-intro"><span>ETAPA 01 / 05 · SUA EXPERIÊNCIA</span><h2>Escolha seus serviços</h2><p>Monte seu momento com liberdade. Selecione quantos desejar e acompanhe o total em tempo real.</p></div><div class="service-grid-heading"><span>MENU DE SERVIÇOS</span><span>TOQUE PARA SELECIONAR ↘</span></div><div class="booking-service-grid">${config.services.map((service, index) => `<button type="button" class="booking-service-card ${state.selected.has(service.id) ? 'selected' : ''}" data-select-service="${service.id}" aria-pressed="${state.selected.has(service.id)}"><img src="${service.image}" alt="Foto ilustrativa de ${service.name.toLowerCase()} em um homem" loading="lazy" /><span class="service-card-top"><span>${String(index + 1).padStart(2, '0')} / 07</span>${service.id === 'corte-barba' ? '<span class="service-featured-tag">A EXPERIÊNCIA COMPLETA</span>' : ''}</span><span class="booking-service-content"><span class="booking-service-name">${service.name}</span><span class="booking-service-price">${service.price === null ? 'Valor sob consulta' : money(service.price)}</span></span><span class="booking-check" aria-hidden="true">${state.selected.has(service.id) ? '✓' : '+'}</span></button>`).join('')}</div><p class="photo-note">Corte + Barba substitui os serviços separados. Fotos ilustrativas.</p><div class="service-selection-tray" id="service-selection-tray" hidden><span class="tray-icon" aria-hidden="true">✦</span><span class="tray-details"><small id="selection-count">0 serviços selecionados</small><strong id="selection-total">R$ 0,00</strong></span><button type="button" data-continue-services>Agendar agora <span aria-hidden="true">↗</span></button></div>`;
+}
+function updateServiceSelection() {
+  content.querySelectorAll('[data-select-service]').forEach(button => {
+    const selected = state.selected.has(button.dataset.selectService);
+    button.classList.toggle('selected', selected);
+    button.setAttribute('aria-pressed', String(selected));
+    button.querySelector('.booking-check').textContent = selected ? '✓' : '+';
+  });
+  const tray = document.querySelector('#service-selection-tray');
+  tray.hidden = state.selected.size === 0;
+  document.body.classList.toggle('has-service-selection', state.selected.size > 0);
+  document.querySelector('#selection-count').textContent = `${state.selected.size} ${state.selected.size === 1 ? 'serviço selecionado' : 'serviços selecionados'}`;
+  document.querySelector('#selection-total').textContent = `${money(total())}${hasConsultation() ? ' + consulta' : ''}`;
+  feedback.textContent = '';
+  renderSummary();
 }
 function renderBarbers() {
   return `<div class="step-intro"><span>ETAPA 02 / 05</span><h2>Escolha o profissional</h2><p>Selecione quem você prefere para cuidar do seu visual.</p></div><div class="barber-grid barber-grid-featured">${config.barbers.map(barber => `<button type="button" class="barber-card ${state.barber === barber.id ? 'selected' : ''}" data-barber="${barber.id}" aria-pressed="${state.barber === barber.id}">${barber.photo ? `<img src="${barber.photo}" alt="Foto de ${barber.name}" />` : `<span class="barber-avatar" aria-label="Avatar temporário de Marcelo">M</span>`}<span><strong>${barber.name}</strong><small>Profissional Êxodo</small></span><span class="barber-radio" aria-hidden="true"></span></button>`).join('')}</div><p class="preview-note">A foto do Marcelo será adicionada em breve.</p>`;
@@ -52,9 +67,13 @@ function render() {
   feedback.textContent = '';
   document.querySelectorAll('[data-step-nav]').forEach(button => { const step = Number(button.dataset.stepNav); button.classList.toggle('is-active', step === state.step); button.classList.toggle('is-done', step < state.step); button.disabled = step > state.step; button.setAttribute('aria-current', step === state.step ? 'step' : 'false'); });
   back.hidden = state.step === 1;
+  document.querySelector('.booking-shell').classList.toggle('step-services', state.step === 1);
+  document.querySelector('.booking-shell').classList.toggle('step-barber', state.step === 2);
+  document.body.classList.toggle('has-service-selection', state.step === 1 && state.selected.size > 0);
   next.innerHTML = state.step === 5 ? 'Confirmação indisponível <span>↗</span>' : 'Continuar agendamento <span>↗</span>';
   next.disabled = state.step === 5;
   renderSummary();
+  if (state.step === 1) updateServiceSelection();
 }
 function goToStep(step) { state.step = step; render(); document.querySelector('.booking-shell').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 function validateAndContinue() {
@@ -71,11 +90,20 @@ function validateAndContinue() {
 }
 content.addEventListener('click', event => {
   const service = event.target.closest('[data-select-service]'); if (service) return toggleService(service.dataset.selectService);
-  const barber = event.target.closest('[data-barber]'); if (barber) { state.barber = barber.dataset.barber; state.date = ''; state.time = ''; render(); return; }
-  const date = event.target.closest('[data-date]'); if (date) { state.date = date.dataset.date; state.time = ''; render(); return; }
-  const time = event.target.closest('[data-time]'); if (time) { state.time = time.dataset.time; render(); }
+  if (event.target.closest('[data-continue-services]')) return validateAndContinue();
+  const barber = event.target.closest('[data-barber]'); if (barber) { state.barber = barber.dataset.barber; state.date = ''; state.time = ''; goToStep(3); return; }
+  const date = event.target.closest('[data-date]'); if (date) { selectDate(date.dataset.date); return; }
+  const time = event.target.closest('[data-time]'); if (time) { state.time = time.dataset.time; content.querySelectorAll('[data-time]').forEach(button => { const selected = button.dataset.time === state.time; button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected)); }); feedback.textContent = ''; renderSummary(); }
 });
-content.addEventListener('change', event => { if (event.target.id === 'booking-date-input') { state.date = event.target.value; state.time = ''; render(); } });
+function selectDate(value) {
+  state.date = value; state.time = '';
+  content.querySelectorAll('[data-date]').forEach(button => { const selected = button.dataset.date === value; button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected)); });
+  content.querySelectorAll('[data-time]').forEach(button => { button.classList.remove('selected'); button.setAttribute('aria-pressed', 'false'); });
+  content.querySelector('#booking-date-input').value = value;
+  feedback.textContent = '';
+  renderSummary();
+}
+content.addEventListener('change', event => { if (event.target.id === 'booking-date-input') selectDate(event.target.value); });
 content.addEventListener('input', event => {
   if (event.target.id === 'booking-name') state.name = event.target.value;
   if (event.target.id === 'booking-phone') { const digits = event.target.value.replace(/\D/g, '').slice(0, 11); state.phone = digits.length > 6 ? `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}` : digits.length > 2 ? `(${digits.slice(0, 2)}) ${digits.slice(2)}` : digits; event.target.value = state.phone; }

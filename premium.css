@@ -168,3 +168,98 @@ footer a:hover { color:var(--ex-gold-light); }
 @media (prefers-reduced-motion: reduce) {
   .booking-page .booking-service-card img { transition:none; }
 }
+
+/* Seleção de serviços e navegação mobile */
+.booking-page .service-step-intro { padding-bottom: 3px; }
+.booking-page .service-grid-heading {
+  display:flex; justify-content:space-between; gap:16px; align-items:center;
+  border-top:1px solid #cbbba7; margin:12px 0 15px; padding-top:15px;
+  color:#836849; font:800 10px 'Manrope',sans-serif; letter-spacing:.17em;
+}
+.booking-page .booking-service-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+.booking-page .booking-service-card { height:228px; border:1px solid #aa8e70; }
+.booking-page .booking-service-card[data-select-service='corte-barba'] { grid-column:span 2; }
+.booking-page .booking-service-card.selected { border:1px solid #aa8e70; box-shadow:inset 0 0 0 3px #e0ad72,0 0 0 2px #e0ad72; }
+.booking-page .booking-service-card.selected img { filter:saturate(.73) contrast(1.1); }
+.booking-page .booking-service-card::after { background:linear-gradient(0deg,rgba(11,9,7,.96) 0%,rgba(11,9,7,.58) 43%,rgba(11,9,7,.08) 100%); }
+.booking-page .service-card-top {
+  position:absolute; z-index:1; top:15px; left:15px; right:15px;
+  display:flex; justify-content:space-between; gap:8px; align-items:center;
+  color:#f8ecdb; font:800 10px 'Manrope',sans-serif; letter-spacing:.12em;
+  text-shadow:0 1px 4px #0008;
+}
+.booking-page .service-featured-tag { background:#d4a672; color:#241a12; padding:7px 8px; font-size:8px; text-shadow:none; letter-spacing:.08em; }
+.booking-page .booking-service-content { padding:17px 42px 17px 15px; }
+.booking-page .booking-service-name { font-size:26px; }
+.booking-page .booking-check { right:15px; bottom:17px; }
+.booking-page .step-services .booking-actions { display:none; }
+.booking-page .step-barber #booking-next { display:none; }
+.booking-page .step-barber .booking-actions { justify-content:flex-start; }
+.service-selection-tray[hidden] { display:none!important; }
+.service-selection-tray {
+  position:fixed; z-index:100; right:24px; bottom:24px; width:min(510px,calc(100vw - 48px));
+  display:flex; align-items:center; gap:14px; padding:12px 12px 12px 18px;
+  background:#211a14; color:#f3e9dc; border:1px solid #c49a6b;
+  box-shadow:0 18px 50px #0008;
+  animation:tray-enter .25s ease-out;
+}
+@keyframes tray-enter { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+.tray-icon { display:grid; place-items:center; width:38px; height:38px; flex:none; border-radius:50%; background:#55402e; color:#e7bc8b; font-size:19px; }
+.tray-details { display:grid; gap:2px; min-width:0; margin-right:auto; }
+.tray-details small { color:#cebca7; font-size:11px; white-space:nowrap; }
+.tray-details strong { font:700 22px 'Manrope',sans-serif; letter-spacing:-.04em; color:#eec494; white-space:nowrap; }
+.service-selection-tray button { border:0; background:#d7ae7c; color:#24170e; padding:15px 16px; font:800 12px 'Manrope',sans-serif; white-space:nowrap; }
+.service-selection-tray button:hover { background:#efd0a5; }
+.service-selection-tray button span { margin-left:15px; font-size:17px; font-weight:400; }
+.has-service-selection { padding-bottom:82px; }
+@media(max-width:900px) {
+  .booking-page .booking-service-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .booking-page .booking-service-card[data-select-service='corte-barba'] { grid-column:span 2; }
+}
+@media(max-width:680px) {
+  .booking-page .booking-section { padding-top:28px; }
+  .booking-page .booking-heading { margin-bottom:24px; }
+  .booking-page .booking-heading h1 { font-size:clamp(59px,13vw,73px); margin:16px 0 12px; }
+  .booking-page .booking-progress { position:sticky; top:0; z-index:20; box-shadow:0 3px 10px #0002; }
+  .booking-page .booking-shell { scroll-margin-top:52px; }
+  .booking-page .step-services .booking-summary { display:none; }
+  .booking-page .booking-main { padding:24px 14px 28px; }
+  .booking-page .step-intro h2 { font-size:clamp(44px,10.5vw,55px); }
+  .booking-page .service-step-intro p { margin-bottom:20px; }
+  .booking-page .service-grid-heading { font-size:8px; letter-spacing:.1em; margin:9px 0 12px; padding-top:12px; }
+  .booking-page .booking-service-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .booking-page .booking-service-card { height:185px; }
+  .booking-page .booking-service-card[data-select-service='corte-barba'] { height:205px; }
+  .booking-page .booking-service-content { padding:13px 29px 13px 10px; }
+  .booking-page .booking-service-name { font-size:21px; }
+  .booking-page .booking-service-price { font-size:11px; }
+  .booking-page .service-card-top { top:9px; left:9px; right:9px; font-size:8px; }
+  .booking-page .service-featured-tag { font-size:7px; padding:5px; }
+  .booking-page .booking-check { right:8px; bottom:11px; }
+  .booking-page .step-barber .booking-summary { display:none; }
+  .booking-page .barber-grid-featured .barber-card { min-height:102px; }
+  .booking-page .date-strip { margin:0 -4px; padding:0 4px 14px; }
+  .booking-page .date-pill { min-width:64px; min-height:70px; }
+  .booking-page .time-pill { min-height:46px; }
+  .booking-page .booking-actions { gap:8px; }
+  .booking-page .booking-actions .button { min-height:49px; }
+  .service-selection-tray { left:10px; right:10px; bottom:max(10px,env(safe-area-inset-bottom)); width:auto; padding:10px; gap:9px; }
+  .tray-icon { display:none; }
+  .tray-details small { font-size:9px; }
+  .tray-details strong { font-size:17px; }
+  .service-selection-tray button { padding:13px 10px; font-size:11px; }
+  .service-selection-tray button span { margin-left:5px; }
+  .has-service-selection { padding-bottom:100px; }
+}
+@media(max-width:360px) {
+  .service-selection-tray button { font-size:10px; }
+  .tray-details strong { font-size:15px; }
+  .booking-page .booking-service-name { font-size:19px; }
+  .booking-page .booking-progress .progress-step { font-size:8px; }
+}
+@media(prefers-reduced-motion:reduce) { .service-selection-tray { animation:none; } }
+@media(hover:none) {
+  .booking-page .booking-service-card:hover,
+  .booking-page .booking-service-card:hover img { transform:none; }
+  .booking-page .booking-service-card:hover img { filter:saturate(.73) contrast(1.1); }
+}
