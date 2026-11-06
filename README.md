@@ -1,6 +1,6 @@
 # Êxodo Barbearia
 
-Página institucional e prévia interativa do agendamento da Êxodo Barbearia. O agendamento fica em `agendamento.html`, separado da página inicial.
+Página institucional e prévia interativa do agendamento da Êxodo Barbearia. O agendamento fica em `agendamento.html`, separado da página inicial. A identidade visual compartilhada fica em `premium.css`.
 
 ## Prévia do agendamento
 

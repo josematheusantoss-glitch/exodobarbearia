@@ -1,0 +1,170 @@
+/* Êxodo — identidade editorial e contraste */
+:root {
+  --ex-ink: #171512;
+  --ex-black: #11110f;
+  --ex-coffee: #29211b;
+  --ex-paper: #f2ede4;
+  --ex-ivory: #e6ddcf;
+  --ex-gold: #c39a6a;
+  --ex-gold-light: #e1bf96;
+  --ex-text: #29231d;
+  --ex-muted: #675d52;
+  --ex-line: #cbbdab;
+}
+body { background: var(--ex-paper); color: var(--ex-text); font-family: 'DM Sans', sans-serif; }
+::selection { background: var(--ex-gold); color: var(--ex-black); }
+:focus-visible { outline: 2px solid var(--ex-gold); outline-offset: 3px; }
+h1, h2, h3 { text-wrap: balance; }
+.section-label, .eyebrow, .summary-kicker, .step-intro > span {
+  font-family: 'Manrope', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .24em;
+}
+.section-label { color: #875c39; }
+.button, .header-cta {
+  transition: transform .25s ease, background-color .25s ease, color .25s ease, border-color .25s ease;
+}
+.button:hover, .header-cta:hover { transform: translateY(-3px); }
+.button-dark { background: var(--ex-ink); color: var(--ex-paper); }
+.button-dark:hover { background: #4b3526; }
+.button-light { background: var(--ex-paper); color: var(--ex-ink); }
+.button-light:hover { background: #e1c8aa; }
+
+/* Página inicial */
+.site-header { border-bottom-color: rgba(245,236,221,.22); background: linear-gradient(180deg,rgba(12,11,10,.28),transparent); }
+.site-header nav { font-family:'Manrope',sans-serif; font-size:12px; letter-spacing:.015em; }
+.site-header nav a { position:relative; padding:9px 0; }
+.site-header nav a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:var(--ex-gold-light); transition:width .25s ease; }
+.site-header nav a:hover::after { width:100%; }
+.header-cta { border-color:rgba(231,208,181,.6); background:rgba(15,12,10,.2); }
+.hero { background:var(--ex-black); }
+.hero-overlay { background:linear-gradient(90deg,rgba(13,12,11,.94) 0%,rgba(13,12,11,.68) 50%,rgba(13,12,11,.25) 100%),linear-gradient(0deg,rgba(13,12,11,.53),transparent 36%); }
+.hero-content { max-width:1200px; }
+.hero h1 { font-family:'Cormorant Garamond',Georgia,serif; font-weight:600; font-size:clamp(75px,8.2vw,130px); line-height:.83; letter-spacing:-.055em; max-width:1000px; margin:33px 0 37px; }
+.hero h1 em { font-family:inherit; font-weight:500; letter-spacing:-.055em; color:var(--ex-gold-light); }
+.hero-content p { font-size:16px; max-width:450px; color:#e6ded3; line-height:1.8; }
+.hero .eyebrow { color:var(--ex-gold-light); }
+.hero .button { letter-spacing:.01em; }
+.hero-bottom { color:#dfcdb8; border-top:1px solid rgba(255,255,255,.25); padding-top:18px; }
+.intro, .space, .founder, .location { position:relative; isolation:isolate; }
+.intro { background:var(--ex-paper); }
+.intro::before, .founder::before, .booking-section::before {
+  content:''; pointer-events:none; position:absolute; inset:0; z-index:-1;
+  background-image:repeating-linear-gradient(115deg,rgba(61,44,27,.025) 0 1px,transparent 1px 5px),radial-gradient(circle at 93% 5%,rgba(177,132,82,.1),transparent 36%);
+}
+.intro h2, .space h2, .founder h2, .location h2, .final-cta h2 { font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(56px,6vw,84px); line-height:.93; font-weight:600; letter-spacing:-.045em; }
+.intro h2 span { font-family:inherit; color:#9c6e45; font-weight:500; }
+.intro p, .founder p { color:#51483f; font-size:16px; line-height:1.85; }
+.intro-stamp { border-color:#bda88e; color:#6d4b31; }
+.underline-link { border-color:var(--ex-gold); }
+.space { background:radial-gradient(circle at 83% 12%,rgba(130,93,58,.2),transparent 30%),repeating-linear-gradient(120deg,rgba(255,255,255,.015) 0 1px,transparent 1px 6px),var(--ex-black); color:var(--ex-paper); border-top:1px solid #302821; border-bottom:1px solid #302821; }
+.space .section-label { color:var(--ex-gold-light); }
+.space h2 { color:#f2e8dc; }
+.space p { color:#d1c4b5; }
+.space .button-dark { border:1px solid var(--ex-gold); background:transparent; color:var(--ex-gold-light); }
+.space .button-dark:hover { background:var(--ex-gold); color:var(--ex-black); }
+.space-gallery { gap:8px; }
+.space-gallery img { filter:saturate(.75) contrast(1.06); }
+.founder { background:#e5ddcf; }
+.founder-photo { border:9px solid #f0e9dd; box-shadow:18px 18px 0 #c9b79f; }
+.founder-name { border-color:#bca88e; }
+.location { background:var(--ex-paper); }
+.location h2 span { color:#9c6e45; }
+.location-copy > p { color:#51483f; }
+.location-details { border-color:#c8b7a3; }
+.location-map { background:#c6b49e; box-shadow:16px 16px 0 #dfd3c1; }
+.location-map iframe { filter:grayscale(.55) sepia(.15) contrast(.98); }
+.final-cta { background:radial-gradient(circle at 15% 80%,rgba(178,126,73,.16),transparent 36%),repeating-linear-gradient(115deg,rgba(255,255,255,.015) 0 1px,transparent 1px 6px),#1d1915; border-top:1px solid #5b432d; }
+.final-cta h2 { color:#f2ede4; font-size:clamp(60px,6.3vw,89px); }
+.final-cta .section-label { color:var(--ex-gold-light); }
+footer { background:#0e0e0c; border-top:1px solid #3c3027; }
+footer a:hover { color:var(--ex-gold-light); }
+
+/* Agendamento */
+.booking-page { background:var(--ex-black); color:var(--ex-paper); }
+.booking-page-header { background:#0e0e0c; border-bottom:1px solid #4b392a; }
+.booking-home-link { color:#e4d0b8; border-color:var(--ex-gold); }
+.booking-page .booking-section { background:radial-gradient(circle at 85% 5%,rgba(145,103,61,.27),transparent 31%),repeating-linear-gradient(115deg,rgba(255,255,255,.018) 0 1px,transparent 1px 6px),var(--ex-black); }
+.booking-page .booking-section::before { background-image:radial-gradient(circle at 0 100%,rgba(150,96,51,.1),transparent 40%); }
+.booking-page .booking-heading h1 { font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(75px,8vw,112px); line-height:.85; font-weight:600; letter-spacing:-.05em; color:#f2eadf; margin:24px 0 20px; }
+.booking-page .booking-heading p { color:#d2c5b5; font-size:15px; }
+.booking-page .booking-heading .section-label { color:var(--ex-gold-light); }
+.booking-heading-mark { color:rgba(219,183,140,.23); font-size:150px; }
+.booking-page .booking-shell { border:1px solid #a68560; box-shadow:18px 18px 0 #4d3a29; background:#efe8dc; color:var(--ex-text); }
+.booking-page .booking-progress { background:#e7ddce; border-bottom:1px solid #baa58b; }
+.booking-page .progress-step { border-color:#d2c2ad; color:#756657; }
+.booking-page .progress-step.is-active { background:#30251c; color:#f3e8d9; }
+.booking-page .progress-step.is-active span { background:var(--ex-gold); color:var(--ex-black); border-color:var(--ex-gold); }
+.booking-page .progress-step.is-done { color:#57412e; }
+.booking-page .progress-step.is-done span { background:#86633e; border-color:#86633e; }
+.booking-page .booking-main { background:#f3eee5; }
+.booking-page .step-intro > span { color:#906640; }
+.booking-page .step-intro h2 { font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(50px,5vw,70px); font-weight:600; line-height:.9; letter-spacing:-.04em; margin:14px 0 18px; color:#2d241d; }
+.booking-page .step-intro p { color:#5c5147; font-size:14px; max-width:600px; }
+.booking-page .booking-service-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.booking-page .booking-service-card { height:236px; min-height:0; background:#171310; border:1px solid #bda385; isolation:isolate; }
+.booking-page .booking-service-card::after { content:''; pointer-events:none; position:absolute; inset:0; z-index:0; background:linear-gradient(0deg,rgba(12,10,8,.94) 0%,rgba(12,10,8,.55) 36%,transparent 78%); }
+.booking-page .booking-service-card img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:saturate(.73) contrast(1.1); transition:transform .35s ease,filter .35s ease; }
+.booking-page .booking-service-card:hover img { transform:scale(1.045); filter:saturate(.9) contrast(1.08); }
+.booking-page .booking-service-card.selected { border:2px solid #dbad72; }
+.booking-page .booking-service-card.selected img { filter:saturate(.85) contrast(1.08); }
+.booking-page .booking-service-content { position:absolute; z-index:1; bottom:0; left:0; right:0; padding:20px 52px 20px 20px; }
+.booking-page .booking-service-name { color:#fff8ee; font-family:'Cormorant Garamond',Georgia,serif; font-weight:700; font-size:29px; line-height:1; text-shadow:0 1px 8px rgba(0,0,0,.4); }
+.booking-page .booking-service-price { color:#eacba9; font-size:13px; letter-spacing:.02em; margin-top:8px; }
+.booking-page .booking-check { z-index:2; bottom:20px; right:20px; width:30px; height:30px; border-color:#d8c2a5; color:#fff; background:rgba(15,12,10,.45); }
+.booking-page .booking-service-card.selected .booking-check { color:var(--ex-black); background:var(--ex-gold-light); border-color:var(--ex-gold-light); }
+.booking-page .photo-note, .booking-page .preview-note { color:#6d6257; }
+.booking-page .booking-summary { background:#2b221b; color:#f3e9dc; border-left:1px solid #ab8a65; }
+.booking-page .summary-kicker { color:#d0a77a; }
+.booking-page .summary-row { border-color:rgba(232,213,190,.25); }
+.booking-page .summary-row span { color:#c1ad99; }
+.booking-page .summary-row strong { color:#f3e9dc; }
+.booking-page .summary-total { border-top:1px solid rgba(232,213,190,.25); }
+.booking-page .summary-total span { color:#d0bda9; }
+.booking-page .summary-total strong { color:#e9bd87; }
+.booking-page .booking-summary > small { color:#b9a48f; }
+.booking-page .booking-actions .button-dark { background:#35271c; border:1px solid #35271c; color:#f6e8d8; }
+.booking-page .booking-actions .button-dark:hover { background:#65492f; }
+.booking-page .booking-back { color:#5c402b; }
+.booking-page .barber-card, .booking-page .date-pill, .booking-page .time-pill { border-color:#c9b8a3; background:#fffaf2; }
+.booking-page .barber-card.selected, .booking-page .date-pill.selected, .booking-page .time-pill.selected { background:#3b2d22; color:#fff4e7; border-color:#3b2d22; }
+.booking-page .barber-card.selected small { color:#d3c2af; }
+.booking-page .identity-fields input { border-color:#bca98f; background:#fffaf2; }
+.booking-page .review-list > div { border-color:#c9b8a3; }
+.booking-page .review-notice { background:#e8dac7; border-color:#aa7744; }
+.booking-page-note { color:#c2a98d; }
+
+@media (max-width:900px) {
+  .hero h1 { font-size:clamp(69px,10vw,105px); }
+  .booking-page .booking-heading h1 { font-size:clamp(68px,9vw,95px); }
+}
+@media (max-width:680px) {
+  .site-header nav { background:#171310; }
+  .hero { min-height:700px; }
+  .hero h1 { font-size:clamp(64px,15vw,86px); line-height:.86; max-width:340px; margin:28px 0; }
+  .hero-content p { font-size:14px; }
+  .hero-bottom { bottom:20px; }
+  .intro h2, .space h2, .founder h2, .location h2, .final-cta h2 { font-size:clamp(55px,13vw,70px); }
+  .space-gallery img { filter:saturate(.8) contrast(1.05); }
+  .founder-photo { box-shadow:9px 9px 0 #c9b79f; }
+  .location-map { box-shadow:9px 9px 0 #dfd3c1; }
+  .booking-page .booking-section { padding-top:48px; }
+  .booking-page .booking-heading h1 { font-size:clamp(65px,14vw,83px); }
+  .booking-page .booking-heading p { color:#d2c5b5; }
+  .booking-page .booking-shell { box-shadow:8px 8px 0 #4d3a29; }
+  .booking-page .booking-summary { background:#2b221b; color:#f3e9dc; border-left:0; border-bottom:1px solid #ab8a65; }
+  .booking-page .booking-main { padding:26px 15px; }
+  .booking-page .step-intro h2 { font-size:49px; line-height:.94; }
+  .booking-page .booking-service-card { height:192px; min-height:0; }
+  .booking-page .booking-service-card img { height:100%; }
+  .booking-page .booking-service-content { padding:14px 28px 14px 11px; }
+  .booking-page .booking-service-name { font-size:21px; line-height:.95; }
+  .booking-page .booking-service-price { font-size:11px; margin-top:6px; }
+  .booking-page .booking-check { bottom:14px; right:8px; width:20px; height:20px; font-size:13px; }
+  .booking-page .booking-progress .progress-step { font-size:9px; }
+  .booking-page .booking-summary .summary-total strong { font-size:23px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .booking-page .booking-service-card img { transition:none; }
+}
