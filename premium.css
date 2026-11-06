@@ -325,3 +325,27 @@ footer a:hover { color:var(--ex-gold-light); }
 .calendar-today-dot { flex:none; width:7px; height:7px; border-radius:50%; background:#b58350; }
 .time-pill:disabled { opacity:.42; cursor:default; }
 @media(max-width:680px) { .booking-calendar { margin:19px 0 25px; padding:15px 11px; } .calendar-header { padding:0 4px 14px; } .calendar-header strong { font-size:25px; } .calendar-weekdays,.calendar-grid { gap:2px; } .calendar-grid { grid-auto-rows:42px; } .calendar-day { font-size:12px; border-radius:8px; } .calendar-footer { font-size:10px; padding-left:4px; } }
+
+/* Tipografia do cabeçalho e navegação direta do calendário */
+.site-header .brand,.booking-page-header .brand,footer .brand { gap:12px; }
+.site-header .brand-mark,.booking-page-header .brand-mark,footer .brand-mark { font-family:'Cinzel',Georgia,serif; font-weight:500; color:#e7c092; }
+.site-header .brand-name,.booking-page-header .brand-name,footer .brand-name { font-family:'Cinzel',Georgia,serif; font-weight:600; font-size:20px; letter-spacing:.09em; line-height:1; }
+.site-header .brand-name small,.booking-page-header .brand-name small,footer .brand-name small { font-family:'Manrope',sans-serif; font-weight:700; font-size:8px; letter-spacing:.32em; line-height:1.4; margin-top:6px; }
+.site-header nav { font-family:'Cormorant Garamond',Georgia,serif; font-size:18px; font-weight:600; letter-spacing:.015em; }
+.site-header nav a { white-space:nowrap; font-size:inherit; }
+.site-header .brand { min-width:195px; }
+footer .brand-name { font-size:16px; }
+.booking-page-header .booking-home-link { font-family:'Manrope',sans-serif; letter-spacing:.02em; }
+.calendar-header { gap:14px; }
+.calendar-caption { min-width:0; }
+.calendar-controls { display:flex; align-items:center; gap:8px; }
+.calendar-select-label { position:relative; display:block; }
+.calendar-select-label::after { content:'⌄'; position:absolute; right:10px; top:50%; transform:translateY(-58%); color:#70523b; pointer-events:none; font-size:17px; }
+.calendar-select-label select { appearance:none; min-width:122px; height:36px; padding:0 29px 0 12px; border:1px solid #c9b59c; border-radius:8px; background:#f6ecdf; color:#3d2d1f; font:700 12px 'Manrope',sans-serif; text-transform:capitalize; cursor:pointer; }
+.calendar-year select { min-width:82px; }
+.calendar-select-label select:hover { background:#eedcc8; }
+.calendar-select-label select:focus-visible { outline:2px solid #a77344; outline-offset:2px; }
+.calendar-navigation { margin-left:5px; }
+.sr-only { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; border:0!important; }
+@media(max-width:900px) { .calendar-header { flex-wrap:wrap; } .calendar-controls { width:100%; } .calendar-navigation { margin-left:auto; } }
+@media(max-width:680px) { .site-header .brand-name,.booking-page-header .brand-name { font-size:16px; } .site-header .brand-name small,.booking-page-header .brand-name small { font-size:6px; } .site-header .brand-mark,.booking-page-header .brand-mark { font-size:34px; } .site-header nav { font-family:'Manrope',sans-serif; font-size:12px; } .calendar-controls { gap:6px; } .calendar-select-label { flex:1; } .calendar-select-label select { width:100%; min-width:0; font-size:11px; padding-left:8px; } .calendar-year { flex:0 0 83px; } .calendar-navigation { gap:4px; margin-left:1px; } .calendar-navigation button { width:32px; height:32px; } }

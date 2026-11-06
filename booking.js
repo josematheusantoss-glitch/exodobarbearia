@@ -47,12 +47,16 @@ function renderBarbers() {
   return `<div class="step-intro"><span>ETAPA 02 / 05</span><h2>Escolha o profissional</h2><p>Selecione quem você prefere para cuidar do seu visual.</p></div><div class="barber-grid barber-grid-featured">${config.barbers.map(barber => `<button type="button" class="barber-card ${state.barber === barber.id ? 'selected' : ''}" data-barber="${barber.id}" aria-pressed="${state.barber === barber.id}">${barber.photo ? `<img src="${barber.photo}" alt="Foto de ${barber.name}" />` : `<span class="barber-avatar" aria-label="Avatar temporário de Marcelo">M</span>`}<span><strong>${barber.name}</strong><small>Profissional Êxodo</small></span><span class="barber-radio" aria-hidden="true"></span></button>`).join('')}</div><p class="preview-note">A foto do Marcelo será adicionada em breve.</p>`;
 }
 function renderCalendar() {
+  const now = new Date();
   const first = new Date(state.calendarYear, state.calendarMonth, 1);
   const offset = (first.getDay() + 6) % 7;
   const days = new Date(state.calendarYear, state.calendarMonth + 1, 0).getDate();
   const monthName = first.toLocaleDateString('pt-BR', { month: 'long' });
   const monthLabel = `${monthName.charAt(0).toUpperCase()}${monthName.slice(1)} de ${state.calendarYear}`;
-  const currentMonth = state.calendarYear === new Date().getFullYear() && state.calendarMonth === new Date().getMonth();
+  const currentMonth = state.calendarYear === now.getFullYear() && state.calendarMonth === now.getMonth();
+  const lastMonth = state.calendarYear === now.getFullYear() + 2 && state.calendarMonth === 11;
+  const monthOptions = Array.from({ length: 12 }, (_, month) => `<option value="${month}" ${month === state.calendarMonth ? 'selected' : ''} ${state.calendarYear === now.getFullYear() && month < now.getMonth() ? 'disabled' : ''}>${new Date(2020, month, 1).toLocaleDateString('pt-BR', { month: 'long' })}</option>`).join('');
+  const yearOptions = Array.from({ length: 3 }, (_, index) => now.getFullYear() + index).map(year => `<option value="${year}" ${year === state.calendarYear ? 'selected' : ''}>${year}</option>`).join('');
   const cells = Array.from({ length: offset }, () => '<span class="calendar-empty" aria-hidden="true"></span>');
   for (let day = 1; day <= days; day++) {
     const date = new Date(state.calendarYear, state.calendarMonth, day);
@@ -61,7 +65,7 @@ function renderCalendar() {
     const past = value < today;
     cells.push(`<button type="button" class="calendar-day${selected ? ' selected' : ''}${value === today ? ' is-today' : ''}" data-date="${value}" aria-label="${date.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}" aria-pressed="${selected}" ${past ? 'disabled' : ''}><span>${day}</span></button>`);
   }
-  return `<div class="booking-calendar" aria-label="Calendário de datas"><div class="calendar-header"><div><small>ESCOLHA O DIA</small><strong>${monthLabel}</strong></div><div class="calendar-navigation"><button type="button" data-calendar-shift="-1" aria-label="Mês anterior" ${currentMonth ? 'disabled' : ''}>←</button><button type="button" data-calendar-shift="1" aria-label="Próximo mês">→</button></div></div><div class="calendar-weekdays" aria-hidden="true"><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span><span>DOM</span></div><div class="calendar-grid">${cells.join('')}</div><div class="calendar-footer"><span class="calendar-today-dot"></span>${state.date ? `Selecionado: <strong>${formatDate(state.date)}</strong>` : 'Toque em um dia para ver os horários'}</div></div>`;
+  return `<div class="booking-calendar" aria-label="Calendário de datas"><div class="calendar-header"><div class="calendar-caption"><small>ESCOLHA O DIA</small><strong>${monthLabel}</strong></div><div class="calendar-controls"><label class="calendar-select-label"><span class="sr-only">Mês</span><select id="calendar-month" aria-label="Selecionar mês">${monthOptions}</select></label><label class="calendar-select-label calendar-year"><span class="sr-only">Ano</span><select id="calendar-year" aria-label="Selecionar ano">${yearOptions}</select></label><div class="calendar-navigation"><button type="button" data-calendar-shift="-1" aria-label="Mês anterior" ${currentMonth ? 'disabled' : ''}>←</button><button type="button" data-calendar-shift="1" aria-label="Próximo mês" ${lastMonth ? 'disabled' : ''}>→</button></div></div></div><div class="calendar-weekdays" aria-hidden="true"><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span><span>DOM</span></div><div class="calendar-grid">${cells.join('')}</div><div class="calendar-footer"><span class="calendar-today-dot"></span>${state.date ? `Selecionado: <strong>${formatDate(state.date)}</strong>` : 'Toque em um dia para ver os horários'}</div></div>`;
 }
 function renderSchedule() {
   return `<div class="step-intro"><span>ETAPA 03 / 05</span><h2>Data e horário</h2><p>Escolha quando deseja vir. Os horários abaixo são apenas uma prévia visual.</p></div>${renderCalendar()}<div class="field-title">Escolha o horário <small>prévia visual</small></div><div class="time-grid">${config.previewTimes.map(time => `<button type="button" class="time-pill ${state.time === time ? 'selected' : ''}" data-time="${time}" aria-pressed="${state.time === time}" ${state.date ? '' : 'disabled'}>${time}</button>`).join('')}</div><p class="preview-note">A disponibilidade real de cada barbeiro será conectada em uma próxima etapa.</p>`;
@@ -127,6 +131,16 @@ function shiftCalendar(amount) {
   state.calendarMonth = month.getMonth();
   content.querySelector('.booking-calendar').outerHTML = renderCalendar();
 }
+content.addEventListener('change', event => {
+  if (event.target.id !== 'calendar-month' && event.target.id !== 'calendar-year') return;
+  const year = Number(content.querySelector('#calendar-year').value);
+  let month = Number(content.querySelector('#calendar-month').value);
+  const now = new Date();
+  if (year === now.getFullYear() && month < now.getMonth()) month = now.getMonth();
+  state.calendarYear = year;
+  state.calendarMonth = month;
+  content.querySelector('.booking-calendar').outerHTML = renderCalendar();
+});
 content.addEventListener('input', event => {
   if (event.target.id === 'booking-name') state.name = event.target.value;
   if (event.target.id === 'booking-phone') { const digits = event.target.value.replace(/\D/g, '').slice(0, 11); state.phone = digits.length > 6 ? `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}` : digits.length > 2 ? `(${digits.slice(0, 2)}) ${digits.slice(2)}` : digits; event.target.value = state.phone; }
