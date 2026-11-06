@@ -50,7 +50,8 @@ function renderCalendar() {
   const first = new Date(state.calendarYear, state.calendarMonth, 1);
   const offset = (first.getDay() + 6) % 7;
   const days = new Date(state.calendarYear, state.calendarMonth + 1, 0).getDate();
-  const monthLabel = first.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  const monthName = first.toLocaleDateString('pt-BR', { month: 'long' });
+  const monthLabel = `${monthName.charAt(0).toUpperCase()}${monthName.slice(1)} de ${state.calendarYear}`;
   const currentMonth = state.calendarYear === new Date().getFullYear() && state.calendarMonth === new Date().getMonth();
   const cells = Array.from({ length: offset }, () => '<span class="calendar-empty" aria-hidden="true"></span>');
   for (let day = 1; day <= days; day++) {
