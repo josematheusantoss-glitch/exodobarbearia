@@ -349,3 +349,18 @@ footer .brand-name { font-size:16px; }
 .sr-only { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; border:0!important; }
 @media(max-width:900px) { .calendar-header { flex-wrap:wrap; } .calendar-controls { width:100%; } .calendar-navigation { margin-left:auto; } }
 @media(max-width:680px) { .site-header .brand-name,.booking-page-header .brand-name { font-size:16px; } .site-header .brand-name small,.booking-page-header .brand-name small { font-size:6px; } .site-header .brand-mark,.booking-page-header .brand-mark { font-size:34px; } .site-header nav { font-family:'Manrope',sans-serif; font-size:12px; } .calendar-controls { gap:6px; } .calendar-select-label { flex:1; } .calendar-select-label select { width:100%; min-width:0; font-size:11px; padding-left:8px; } .calendar-year { flex:0 0 83px; } .calendar-navigation { gap:4px; margin-left:1px; } .calendar-navigation button { width:32px; height:32px; } }
+
+/* Fluxo guiado e assinatura */
+.booking-page .step-schedule #booking-next { display:none; }
+.schedule-times { scroll-margin-top:92px; }
+.footer-inner { position:relative; padding-bottom:24px; }
+.footer-credit { position:absolute; right:0; bottom:15px; color:#928273; font:500 10px 'Manrope',sans-serif; letter-spacing:.035em; }
+.booking-complete { width:min(520px,calc(100% - 32px)); padding:40px; border:1px solid #c9a779; border-radius:18px; background:#f4ede2; box-shadow:0 28px 90px #000a; }
+.booking-complete::backdrop { background:rgba(9,8,7,.76); backdrop-filter:blur(5px); }
+.complete-mark { display:grid; place-items:center; width:52px; height:52px; margin-bottom:25px; border-radius:50%; background:#3b2d22; color:#e8c496; font:700 24px 'Manrope',sans-serif; }
+.booking-complete h2 { margin:10px 0 15px; font:600 47px/.95 'Cormorant Garamond',Georgia,serif; letter-spacing:-.04em; color:#30251c; }
+.booking-complete p { margin:0; color:#645547; font-size:14px; line-height:1.7; }
+.complete-actions { display:flex; align-items:center; gap:23px; margin-top:28px; }
+.complete-actions .button { padding:13px 18px; gap:30px; }
+.complete-home { color:#6a4a2e; font-size:12px; font-weight:800; border-bottom:1px solid #a98566; padding:7px 0; }
+@media(max-width:680px) { .footer-inner { padding-bottom:58px; } .footer-credit { left:0; right:auto; bottom:20px; } .booking-complete { padding:30px 24px; } .booking-complete h2 { font-size:40px; } .schedule-times { scroll-margin-top:80px; } }

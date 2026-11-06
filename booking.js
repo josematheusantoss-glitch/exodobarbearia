@@ -68,14 +68,14 @@ function renderCalendar() {
   return `<div class="booking-calendar" aria-label="Calendário de datas"><div class="calendar-header"><div class="calendar-caption"><small>ESCOLHA O DIA</small><strong>${monthLabel}</strong></div><div class="calendar-controls"><label class="calendar-select-label"><span class="sr-only">Mês</span><select id="calendar-month" aria-label="Selecionar mês">${monthOptions}</select></label><label class="calendar-select-label calendar-year"><span class="sr-only">Ano</span><select id="calendar-year" aria-label="Selecionar ano">${yearOptions}</select></label><div class="calendar-navigation"><button type="button" data-calendar-shift="-1" aria-label="Mês anterior" ${currentMonth ? 'disabled' : ''}>←</button><button type="button" data-calendar-shift="1" aria-label="Próximo mês" ${lastMonth ? 'disabled' : ''}>→</button></div></div></div><div class="calendar-weekdays" aria-hidden="true"><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span><span>DOM</span></div><div class="calendar-grid">${cells.join('')}</div><div class="calendar-footer"><span class="calendar-today-dot"></span>${state.date ? `Selecionado: <strong>${formatDate(state.date)}</strong>` : 'Toque em um dia para ver os horários'}</div></div>`;
 }
 function renderSchedule() {
-  return `<div class="step-intro"><span>ETAPA 03 / 05</span><h2>Data e horário</h2><p>Escolha quando deseja vir. Os horários abaixo são apenas uma prévia visual.</p></div>${renderCalendar()}<div class="field-title">Escolha o horário <small>prévia visual</small></div><div class="time-grid">${config.previewTimes.map(time => `<button type="button" class="time-pill ${state.time === time ? 'selected' : ''}" data-time="${time}" aria-pressed="${state.time === time}" ${state.date ? '' : 'disabled'}>${time}</button>`).join('')}</div><p class="preview-note">A disponibilidade real de cada barbeiro será conectada em uma próxima etapa.</p>`;
+  return `<div class="step-intro"><span>ETAPA 03 / 05</span><h2>Data e horário</h2><p>Escolha quando deseja vir. Os horários abaixo são apenas uma prévia visual.</p></div>${renderCalendar()}<div class="schedule-times" id="schedule-times"><div class="field-title">Escolha o horário <small>prévia visual</small></div><div class="time-grid">${config.previewTimes.map(time => `<button type="button" class="time-pill ${state.time === time ? 'selected' : ''}" data-time="${time}" aria-pressed="${state.time === time}" ${state.date ? '' : 'disabled'}>${time}</button>`).join('')}</div><p class="preview-note">A disponibilidade real de cada barbeiro será conectada em uma próxima etapa.</p></div>`;
 }
 function renderIdentity() {
-  return `<div class="step-intro"><span>ETAPA 04 / 05</span><h2>Seus dados</h2><p>Informe seu nome e WhatsApp para visualizar o resumo.</p></div><div class="identity-fields"><label>Nome completo<input id="booking-name" type="text" autocomplete="name" placeholder="Digite seu nome completo" value="${escapeHtml(state.name)}" required maxlength="120" /></label><label>WhatsApp com DDD<input id="booking-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(82) 99999-9999" value="${escapeHtml(state.phone)}" required maxlength="15" /></label></div>`;
+  return `<div class="step-intro"><span>ETAPA 05 / 05</span><h2>Seus dados</h2><p>Para concluir esta prévia, informe seu nome completo e WhatsApp com DDD.</p></div><div class="identity-fields"><label>Nome completo<input id="booking-name" type="text" autocomplete="name" placeholder="Digite seu nome completo" value="${escapeHtml(state.name)}" required maxlength="120" /></label><label>WhatsApp com DDD<input id="booking-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(82) 99999-9999" value="${escapeHtml(state.phone)}" required maxlength="15" /></label></div><p class="preview-note">Seus dados não serão enviados ou salvos nesta prévia.</p>`;
 }
 function renderReview() {
   const barber = config.barbers.find(item => item.id === state.barber);
-  return `<div class="step-intro"><span>ETAPA 05 / 05</span><h2>Revise os detalhes</h2><p>Confira sua escolha. Esta prévia ainda não registra reservas.</p></div><div class="review-list"><div><span>Cliente</span><strong>${escapeHtml(state.name)}</strong></div><div><span>Serviços</span><strong>${selectedServices().map(item => escapeHtml(item.name)).join(', ')}</strong></div><div><span>Profissional</span><strong>${barber?.name ?? '—'}</strong></div><div><span>Data e horário</span><strong>${formatDate(state.date)}, ${state.time}</strong></div><div><span>WhatsApp</span><strong>${escapeHtml(state.phone)}</strong></div><div><span>Valor previsto</span><strong>${money(total())}${hasConsultation() ? ' + valor sob consulta' : ''}</strong></div></div><div class="review-notice">A confirmação será ativada quando a agenda e o banco de dados estiverem configurados.</div>`;
+  return `<div class="step-intro"><span>ETAPA 04 / 05</span><h2>Confira sua escolha</h2><p>Revise os detalhes antes de informar seus dados.</p></div><div class="review-list"><div><span>Serviços</span><strong>${selectedServices().map(item => escapeHtml(item.name)).join(', ')}</strong></div><div><span>Profissional</span><strong>${barber?.name ?? '—'}</strong></div><div><span>Data e horário</span><strong>${formatDate(state.date)}, ${state.time}</strong></div><div><span>Valor previsto</span><strong>${money(total())}${hasConsultation() ? ' + valor sob consulta' : ''}</strong></div></div><div class="review-notice">Este é um resumo visual. O horário ainda não está reservado.</div>`;
 }
 function renderSummary() {
   const barber = config.barbers.find(item => item.id === state.barber);
@@ -83,15 +83,16 @@ function renderSummary() {
   document.querySelector('#booking-total').textContent = `${money(total())}${hasConsultation() ? ' + consulta' : ''}`;
 }
 function render() {
-  content.innerHTML = [renderServices, renderBarbers, renderSchedule, renderIdentity, renderReview][state.step - 1]();
+  content.innerHTML = [renderServices, renderBarbers, renderSchedule, renderReview, renderIdentity][state.step - 1]();
   feedback.textContent = '';
   document.querySelectorAll('[data-step-nav]').forEach(button => { const step = Number(button.dataset.stepNav); button.classList.toggle('is-active', step === state.step); button.classList.toggle('is-done', step < state.step); button.disabled = step > state.step; button.setAttribute('aria-current', step === state.step ? 'step' : 'false'); });
   back.hidden = state.step === 1;
   document.querySelector('.booking-shell').classList.toggle('step-services', state.step === 1);
   document.querySelector('.booking-shell').classList.toggle('step-barber', state.step === 2);
+  document.querySelector('.booking-shell').classList.toggle('step-schedule', state.step === 3);
   document.body.classList.toggle('has-service-selection', state.step === 1 && state.selected.size > 0);
-  next.innerHTML = state.step === 5 ? 'Confirmação indisponível <span>↗</span>' : 'Continuar agendamento <span>↗</span>';
-  next.disabled = state.step === 5;
+  next.innerHTML = state.step === 4 ? 'Confirmar escolhas <span>↗</span>' : state.step === 5 ? 'Concluir prévia <span>↗</span>' : 'Continuar agendamento <span>↗</span>';
+  next.disabled = false;
   renderSummary();
   if (state.step === 1) updateServiceSelection();
 }
@@ -100,11 +101,14 @@ function validateAndContinue() {
   if (state.step === 1 && !state.selected.size) return feedback.textContent = 'Escolha pelo menos um serviço para continuar.';
   if (state.step === 2 && !state.barber) return feedback.textContent = 'Escolha um profissional para continuar.';
   if (state.step === 3 && (!state.date || !state.time)) return feedback.textContent = 'Escolha data e horário para continuar.';
-  if (state.step === 4) {
+  if (state.step === 5) {
     state.name = document.querySelector('#booking-name').value.trim();
     state.phone = document.querySelector('#booking-phone').value.trim();
     if (state.name.split(/\s+/).length < 2) return feedback.textContent = 'Informe seu nome completo.';
     if (state.phone.replace(/\D/g, '').length < 10) return feedback.textContent = 'Informe um WhatsApp válido com DDD.';
+    document.querySelector('#complete-title').textContent = `Obrigado, ${state.name.split(/\s+/)[0]}!`;
+    document.querySelector('#booking-complete').showModal();
+    return;
   }
   if (state.step < 5) { goToStep(state.step + 1); window.exodoToast?.('Etapa concluída', 'Continue escolhendo sua experiência.', 'success'); }
 }
@@ -114,7 +118,7 @@ content.addEventListener('click', event => {
   const barber = event.target.closest('[data-barber]'); if (barber) { state.barber = barber.dataset.barber; state.date = ''; state.time = ''; goToStep(3); window.exodoToast?.('Profissional selecionado', 'Escolha um dia e horário na agenda.', 'success'); return; }
   const month = event.target.closest('[data-calendar-shift]'); if (month) { shiftCalendar(Number(month.dataset.calendarShift)); return; }
   const date = event.target.closest('[data-date]'); if (date) { selectDate(date.dataset.date); return; }
-  const time = event.target.closest('[data-time]'); if (time) { state.time = time.dataset.time; content.querySelectorAll('[data-time]').forEach(button => { const selected = button.dataset.time === state.time; button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected)); }); feedback.textContent = ''; renderSummary(); }
+  const time = event.target.closest('[data-time]'); if (time) { state.time = time.dataset.time; goToStep(4); window.exodoToast?.('Horário selecionado', 'Confira os detalhes da sua escolha.', 'success'); }
 });
 function selectDate(value) {
   state.date = value; state.time = '';
@@ -124,6 +128,7 @@ function selectDate(value) {
   content.querySelector('.calendar-footer').innerHTML = `<span class="calendar-today-dot"></span>Selecionado: <strong>${formatDate(value)}</strong>`;
   feedback.textContent = '';
   renderSummary();
+  requestAnimationFrame(() => document.querySelector('#schedule-times')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }));
 }
 function shiftCalendar(amount) {
   const month = new Date(state.calendarYear, state.calendarMonth + amount, 1);
@@ -143,9 +148,10 @@ content.addEventListener('change', event => {
 });
 content.addEventListener('input', event => {
   if (event.target.id === 'booking-name') state.name = event.target.value;
-  if (event.target.id === 'booking-phone') { const digits = event.target.value.replace(/\D/g, '').slice(0, 11); state.phone = digits.length > 6 ? `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}` : digits.length > 2 ? `(${digits.slice(0, 2)}) ${digits.slice(2)}` : digits; event.target.value = state.phone; }
+  if (event.target.id === 'booking-phone') { const digits = event.target.value.replace(/\D/g, '').slice(0, 11); const split = digits.length > 10 ? 7 : 6; state.phone = digits.length > split ? `(${digits.slice(0, 2)}) ${digits.slice(2, split)}-${digits.slice(split)}` : digits.length > 2 ? `(${digits.slice(0, 2)}) ${digits.slice(2)}` : digits; event.target.value = state.phone; }
 });
 next.addEventListener('click', validateAndContinue);
+document.querySelector('#complete-close').addEventListener('click', () => document.querySelector('#booking-complete').close());
 back.addEventListener('click', () => { if (state.step > 1) goToStep(state.step - 1); });
 document.querySelectorAll('[data-step-nav]').forEach(button => button.addEventListener('click', () => { const step = Number(button.dataset.stepNav); if (step < state.step) goToStep(step); }));
 render();
