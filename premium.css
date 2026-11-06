@@ -364,3 +364,25 @@ footer .brand-name { font-size:16px; }
 .complete-actions .button { padding:13px 18px; gap:30px; }
 .complete-home { color:#6a4a2e; font-size:12px; font-weight:800; border-bottom:1px solid #a98566; padding:7px 0; }
 @media(max-width:680px) { .footer-inner { padding-bottom:58px; } .footer-credit { left:0; right:auto; bottom:20px; } .booking-complete { padding:30px 24px; } .booking-complete h2 { font-size:40px; } .schedule-times { scroll-margin-top:80px; } }
+
+/* Página inicial: Pedro em destaque e acesso constante ao agendamento */
+.intro-booking { margin-top:25px; }
+.founder { overflow:hidden; background:radial-gradient(circle at 82% 13%,rgba(165,111,60,.21),transparent 35%),repeating-linear-gradient(120deg,rgba(255,255,255,.014) 0 1px,transparent 1px 6px),#181512; color:#f2e8dc; }
+.founder::before { opacity:.23; }
+.founder-layout { grid-template-columns:.8fr 1fr; gap:clamp(45px,8vw,115px); align-items:center; }
+.founder-photo { position:relative; height:620px; margin:0; border:8px solid #6b4d32; background:#4a3527; box-shadow:20px 20px 0 #35271c; }
+.founder-photo img { filter:saturate(.8) contrast(1.08); }
+.founder-photo-caption { position:absolute; left:0; right:0; bottom:0; padding:15px 19px; background:linear-gradient(0deg,rgba(16,13,11,.9),rgba(16,13,11,.15)); color:#f1d0a7; font:800 10px 'Manrope',sans-serif; letter-spacing:.2em; }
+.founder .section-label { color:#d6aa78; }
+.founder-role { display:inline-block; margin:30px 0 0; padding:8px 12px; border:1px solid #a97949; border-radius:999px; color:#e8c294; font:800 10px 'Manrope',sans-serif; letter-spacing:.19em; }
+.founder h2 { margin:20px 0 24px; font-size:clamp(80px,9vw,132px); line-height:.78; color:#fff5e8; }
+.founder h2 em { font-weight:500; color:#d7ae80; }
+.founder p { max-width:500px; color:#d4c6b7; font-size:16px; }
+.founder-signature { max-width:510px; margin:26px 0 31px; padding:17px 0 0; border-top:1px solid #6e5844; font:italic 600 25px 'Cormorant Garamond',Georgia,serif; color:#dfb88a; }
+.founder .button-light { width:max-content; }
+.location-actions { display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px; }
+.location-booking-link { display:inline-flex; align-items:center; gap:12px; border-bottom:1px solid #98724c; padding:9px 2px; color:#65472e; font:800 12px 'Manrope',sans-serif; }
+.location-booking-link:hover { color:#a36a3b; }
+.mobile-booking-cta { display:none; }
+@media(max-width:900px) { .founder-layout { gap:45px; } .founder-photo { height:510px; } .founder h2 { font-size:clamp(75px,10vw,100px); } }
+@media(max-width:680px) { body:not(.booking-page) { padding-bottom:72px; } .founder { padding-top:80px; padding-bottom:88px; } .founder-layout { display:flex; flex-direction:column; align-items:stretch; gap:43px; } .founder-photo { width:calc(100% - 12px); height:490px; margin:0; box-shadow:12px 12px 0 #35271c; } .founder h2 { font-size:clamp(78px,22vw,105px); } .founder-role { margin-top:24px; } .founder-signature { font-size:23px; } .location-actions { align-items:flex-start; flex-direction:column; gap:12px; } .mobile-booking-cta { position:fixed; z-index:80; display:flex; align-items:center; justify-content:space-between; left:16px; right:16px; bottom:max(12px,env(safe-area-inset-bottom)); min-height:52px; padding:11px 12px 11px 20px; border:1px solid #dbb386; border-radius:999px; background:#201811; color:#f4e9da; box-shadow:0 10px 34px #0008; font:800 13px 'Manrope',sans-serif; } .mobile-booking-cta span { display:grid; place-items:center; width:29px; height:29px; border-radius:50%; background:#d8af7d; color:#281b10; font-size:18px; font-weight:500; } }
