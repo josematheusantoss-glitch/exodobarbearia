@@ -1,5 +1,5 @@
 const config = window.EXODO_BOOKING_CONFIG;
-const state = { step: 1, selected: new Set(), barber: null, date: '', time: '', name: '', phone: '' };
+const state = { step: 1, selected: new Set(), barber: null, date: '', time: '', name: '', phone: '', calendarMonth: new Date().getMonth(), calendarYear: new Date().getFullYear() };
 const money = value => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
 const selectedServices = () => config.services.filter(service => state.selected.has(service.id));
 const total = () => selectedServices().reduce((sum, service) => sum + (service.price ?? 0), 0);
@@ -46,11 +46,24 @@ function updateServiceSelection() {
 function renderBarbers() {
   return `<div class="step-intro"><span>ETAPA 02 / 05</span><h2>Escolha o profissional</h2><p>Selecione quem você prefere para cuidar do seu visual.</p></div><div class="barber-grid barber-grid-featured">${config.barbers.map(barber => `<button type="button" class="barber-card ${state.barber === barber.id ? 'selected' : ''}" data-barber="${barber.id}" aria-pressed="${state.barber === barber.id}">${barber.photo ? `<img src="${barber.photo}" alt="Foto de ${barber.name}" />` : `<span class="barber-avatar" aria-label="Avatar temporário de Marcelo">M</span>`}<span><strong>${barber.name}</strong><small>Profissional Êxodo</small></span><span class="barber-radio" aria-hidden="true"></span></button>`).join('')}</div><p class="preview-note">A foto do Marcelo será adicionada em breve.</p>`;
 }
-function dateOptions() {
-  return Array.from({ length: 14 }, (_, i) => { const date = new Date(); date.setDate(date.getDate() + i); return { value: localDate(date), day: date.toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', ''), number: date.getDate() }; });
+function renderCalendar() {
+  const first = new Date(state.calendarYear, state.calendarMonth, 1);
+  const offset = (first.getDay() + 6) % 7;
+  const days = new Date(state.calendarYear, state.calendarMonth + 1, 0).getDate();
+  const monthLabel = first.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  const currentMonth = state.calendarYear === new Date().getFullYear() && state.calendarMonth === new Date().getMonth();
+  const cells = Array.from({ length: offset }, () => '<span class="calendar-empty" aria-hidden="true"></span>');
+  for (let day = 1; day <= days; day++) {
+    const date = new Date(state.calendarYear, state.calendarMonth, day);
+    const value = localDate(date);
+    const selected = value === state.date;
+    const past = value < today;
+    cells.push(`<button type="button" class="calendar-day${selected ? ' selected' : ''}${value === today ? ' is-today' : ''}" data-date="${value}" aria-label="${date.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}" aria-pressed="${selected}" ${past ? 'disabled' : ''}><span>${day}</span></button>`);
+  }
+  return `<div class="booking-calendar" aria-label="Calendário de datas"><div class="calendar-header"><div><small>ESCOLHA O DIA</small><strong>${monthLabel}</strong></div><div class="calendar-navigation"><button type="button" data-calendar-shift="-1" aria-label="Mês anterior" ${currentMonth ? 'disabled' : ''}>←</button><button type="button" data-calendar-shift="1" aria-label="Próximo mês">→</button></div></div><div class="calendar-weekdays" aria-hidden="true"><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span><span>DOM</span></div><div class="calendar-grid">${cells.join('')}</div><div class="calendar-footer"><span class="calendar-today-dot"></span>${state.date ? `Selecionado: <strong>${formatDate(state.date)}</strong>` : 'Toque em um dia para ver os horários'}</div></div>`;
 }
 function renderSchedule() {
-  return `<div class="step-intro"><span>ETAPA 03 / 05</span><h2>Data e horário</h2><p>Escolha quando deseja vir. Os horários abaixo são apenas uma prévia visual.</p></div><div class="field-title">Escolha a data</div><div class="date-strip" aria-label="Próximos dias">${dateOptions().map(date => `<button type="button" class="date-pill ${state.date === date.value ? 'selected' : ''}" data-date="${date.value}" aria-pressed="${state.date === date.value}"><small>${date.day}</small><strong>${date.number}</strong></button>`).join('')}</div><label class="date-field">Ou selecione outra data <input id="booking-date-input" type="date" min="${today}" value="${state.date}" /></label><div class="field-title">Escolha o horário <small>prévia visual</small></div><div class="time-grid">${config.previewTimes.map(time => `<button type="button" class="time-pill ${state.time === time ? 'selected' : ''}" data-time="${time}" aria-pressed="${state.time === time}">${time}</button>`).join('')}</div><p class="preview-note">A disponibilidade real de cada barbeiro será conectada em uma próxima etapa.</p>`;
+  return `<div class="step-intro"><span>ETAPA 03 / 05</span><h2>Data e horário</h2><p>Escolha quando deseja vir. Os horários abaixo são apenas uma prévia visual.</p></div>${renderCalendar()}<div class="field-title">Escolha o horário <small>prévia visual</small></div><div class="time-grid">${config.previewTimes.map(time => `<button type="button" class="time-pill ${state.time === time ? 'selected' : ''}" data-time="${time}" aria-pressed="${state.time === time}" ${state.date ? '' : 'disabled'}>${time}</button>`).join('')}</div><p class="preview-note">A disponibilidade real de cada barbeiro será conectada em uma próxima etapa.</p>`;
 }
 function renderIdentity() {
   return `<div class="step-intro"><span>ETAPA 04 / 05</span><h2>Seus dados</h2><p>Informe seu nome e WhatsApp para visualizar o resumo.</p></div><div class="identity-fields"><label>Nome completo<input id="booking-name" type="text" autocomplete="name" placeholder="Digite seu nome completo" value="${escapeHtml(state.name)}" required maxlength="120" /></label><label>WhatsApp com DDD<input id="booking-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(82) 99999-9999" value="${escapeHtml(state.phone)}" required maxlength="15" /></label></div>`;
@@ -94,6 +107,7 @@ content.addEventListener('click', event => {
   const service = event.target.closest('[data-select-service]'); if (service) return toggleService(service.dataset.selectService);
   if (event.target.closest('[data-continue-services]')) return validateAndContinue();
   const barber = event.target.closest('[data-barber]'); if (barber) { state.barber = barber.dataset.barber; state.date = ''; state.time = ''; goToStep(3); window.exodoToast?.('Profissional selecionado', 'Escolha um dia e horário na agenda.', 'success'); return; }
+  const month = event.target.closest('[data-calendar-shift]'); if (month) { shiftCalendar(Number(month.dataset.calendarShift)); return; }
   const date = event.target.closest('[data-date]'); if (date) { selectDate(date.dataset.date); return; }
   const time = event.target.closest('[data-time]'); if (time) { state.time = time.dataset.time; content.querySelectorAll('[data-time]').forEach(button => { const selected = button.dataset.time === state.time; button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected)); }); feedback.textContent = ''; renderSummary(); }
 });
@@ -101,11 +115,17 @@ function selectDate(value) {
   state.date = value; state.time = '';
   content.querySelectorAll('[data-date]').forEach(button => { const selected = button.dataset.date === value; button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected)); });
   content.querySelectorAll('[data-time]').forEach(button => { button.classList.remove('selected'); button.setAttribute('aria-pressed', 'false'); });
-  content.querySelector('#booking-date-input').value = value;
+  content.querySelectorAll('[data-time]').forEach(button => { button.disabled = false; });
+  content.querySelector('.calendar-footer').innerHTML = `<span class="calendar-today-dot"></span>Selecionado: <strong>${formatDate(value)}</strong>`;
   feedback.textContent = '';
   renderSummary();
 }
-content.addEventListener('change', event => { if (event.target.id === 'booking-date-input') selectDate(event.target.value); });
+function shiftCalendar(amount) {
+  const month = new Date(state.calendarYear, state.calendarMonth + amount, 1);
+  state.calendarYear = month.getFullYear();
+  state.calendarMonth = month.getMonth();
+  content.querySelector('.booking-calendar').outerHTML = renderCalendar();
+}
 content.addEventListener('input', event => {
   if (event.target.id === 'booking-name') state.name = event.target.value;
   if (event.target.id === 'booking-phone') { const digits = event.target.value.replace(/\D/g, '').slice(0, 11); state.phone = digits.length > 6 ? `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}` : digits.length > 2 ? `(${digits.slice(0, 2)}) ${digits.slice(2)}` : digits; event.target.value = state.phone; }
