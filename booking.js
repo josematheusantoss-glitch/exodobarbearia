@@ -22,6 +22,8 @@ function toggleService(id) {
   }
   state.date = ''; state.time = '';
   updateServiceSelection();
+  const selected = state.selected.has(id);
+  window.exodoToast?.(selected ? 'Serviço adicionado' : 'Serviço removido', selected ? 'Sua seleção foi atualizada.' : 'O total foi atualizado.', selected ? 'success' : 'neutral');
 }
 function renderServices() {
   return `<div class="step-intro service-step-intro"><span>ETAPA 01 / 05 · SUA EXPERIÊNCIA</span><h2>Escolha seus serviços</h2><p>Monte seu momento com liberdade. Selecione quantos desejar e acompanhe o total em tempo real.</p></div><div class="service-grid-heading"><span>MENU DE SERVIÇOS</span><span>TOQUE PARA SELECIONAR ↘</span></div><div class="booking-service-grid">${config.services.map((service, index) => `<button type="button" class="booking-service-card ${state.selected.has(service.id) ? 'selected' : ''}" data-select-service="${service.id}" aria-pressed="${state.selected.has(service.id)}"><img src="${service.image}" alt="Foto ilustrativa de ${service.name.toLowerCase()} em um homem" loading="lazy" /><span class="service-card-top"><span>${String(index + 1).padStart(2, '0')} / 07</span>${service.id === 'corte-barba' ? '<span class="service-featured-tag">A EXPERIÊNCIA COMPLETA</span>' : ''}</span><span class="booking-service-content"><span class="booking-service-name">${service.name}</span><span class="booking-service-price">${service.price === null ? 'Valor sob consulta' : money(service.price)}</span></span><span class="booking-check" aria-hidden="true">${state.selected.has(service.id) ? '✓' : '+'}</span></button>`).join('')}</div><p class="photo-note">Corte + Barba substitui os serviços separados. Fotos ilustrativas.</p><div class="service-selection-tray" id="service-selection-tray" hidden><span class="tray-icon" aria-hidden="true">✦</span><span class="tray-details"><small id="selection-count">0 serviços selecionados</small><strong id="selection-total">R$ 0,00</strong></span><button type="button" data-continue-services>Agendar agora <span aria-hidden="true">↗</span></button></div>`;
@@ -86,12 +88,12 @@ function validateAndContinue() {
     if (state.name.split(/\s+/).length < 2) return feedback.textContent = 'Informe seu nome completo.';
     if (state.phone.replace(/\D/g, '').length < 10) return feedback.textContent = 'Informe um WhatsApp válido com DDD.';
   }
-  if (state.step < 5) goToStep(state.step + 1);
+  if (state.step < 5) { goToStep(state.step + 1); window.exodoToast?.('Etapa concluída', 'Continue escolhendo sua experiência.', 'success'); }
 }
 content.addEventListener('click', event => {
   const service = event.target.closest('[data-select-service]'); if (service) return toggleService(service.dataset.selectService);
   if (event.target.closest('[data-continue-services]')) return validateAndContinue();
-  const barber = event.target.closest('[data-barber]'); if (barber) { state.barber = barber.dataset.barber; state.date = ''; state.time = ''; goToStep(3); return; }
+  const barber = event.target.closest('[data-barber]'); if (barber) { state.barber = barber.dataset.barber; state.date = ''; state.time = ''; goToStep(3); window.exodoToast?.('Profissional selecionado', 'Escolha um dia e horário na agenda.', 'success'); return; }
   const date = event.target.closest('[data-date]'); if (date) { selectDate(date.dataset.date); return; }
   const time = event.target.closest('[data-time]'); if (time) { state.time = time.dataset.time; content.querySelectorAll('[data-time]').forEach(button => { const selected = button.dataset.time === state.time; button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected)); }); feedback.textContent = ''; renderSummary(); }
 });

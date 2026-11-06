@@ -263,3 +263,40 @@ footer a:hover { color:var(--ex-gold-light); }
   .booking-page .booking-service-card:hover img { transform:none; }
   .booking-page .booking-service-card:hover img { filter:saturate(.73) contrast(1.1); }
 }
+
+/* Botões e feedback inspirados no toast da referência */
+.button, .header-cta, .service-selection-tray button, .booking-page .booking-actions .button {
+  position:relative; overflow:hidden; isolation:isolate; border-radius:999px;
+  box-shadow:inset 0 1px rgba(255,255,255,.28),0 8px 24px rgba(0,0,0,.15);
+  transition:transform .22s ease,box-shadow .22s ease,background-color .22s ease,color .22s ease;
+}
+.button::before, .header-cta::before, .service-selection-tray button::before {
+  content:''; position:absolute; inset:0; z-index:-1; border-radius:inherit;
+  background:linear-gradient(115deg,transparent 18%,rgba(255,255,255,.22) 50%,transparent 82%);
+  transform:translateX(-130%); transition:transform .65s ease;
+}
+.button:hover::before, .header-cta:hover::before, .service-selection-tray button:hover::before { transform:translateX(130%); }
+.button:hover, .header-cta:hover, .service-selection-tray button:hover { box-shadow:inset 0 1px rgba(255,255,255,.35),0 14px 28px rgba(0,0,0,.23); }
+.button:active, .header-cta:active, .service-selection-tray button:active { transform:translateY(1px) scale(.985); }
+.button > span, .header-cta > span, .service-selection-tray button > span { display:inline-grid; place-items:center; width:25px; height:25px; border-radius:50%; background:rgba(127,90,49,.13); transition:transform .25s ease,background .25s ease; }
+.button:hover > span, .header-cta:hover > span, .service-selection-tray button:hover > span { transform:rotate(45deg); background:rgba(127,90,49,.22); }
+.header-cta > span { margin-left:12px; }
+.service-selection-tray button { display:inline-flex; align-items:center; gap:10px; padding:10px 13px 10px 18px; }
+.service-selection-tray button span { margin:0; }
+.button.is-busy > span, .header-cta.is-busy > span { font-size:0; }
+.button.is-busy > span::after, .header-cta.is-busy > span::after { content:''; width:14px; height:14px; border:2px solid currentColor; border-right-color:transparent; border-radius:50%; animation:action-spin .6s linear infinite; }
+.action-toast { position:fixed; z-index:150; left:50%; bottom:max(24px,env(safe-area-inset-bottom)); display:flex; align-items:center; gap:12px; width:max-content; max-width:calc(100vw - 32px); min-height:58px; padding:10px 22px 10px 11px; border:1px solid #a98863; border-radius:999px; background:#1c1916; color:#f5eadb; box-shadow:0 18px 48px #0007,inset 0 1px #ffffff25; opacity:0; pointer-events:none; transform:translate(-50%,18px) scale(.96); transition:opacity .25s ease,transform .3s ease; }
+.action-toast.is-visible { opacity:1; transform:translate(-50%,0) scale(1); }
+.action-toast-icon { display:grid; place-items:center; flex:none; width:36px; height:36px; border-radius:50%; background:#6a5036; color:#f5d2a7; }
+.action-toast-icon::before { content:''; width:16px; height:16px; border:2px solid currentColor; border-right-color:transparent; border-radius:50%; animation:action-spin .6s linear infinite; }
+.action-toast.is-complete:not([data-kind='loading']) .action-toast-icon::before { content:'✓'; width:auto; height:auto; border:0; font:800 18px 'Manrope',sans-serif; animation:action-check .3s ease-out both; }
+.action-toast[data-kind='neutral'] .action-toast-icon::before { content:'−'!important; width:auto!important; height:auto!important; border:0!important; font:800 21px 'Manrope',sans-serif!important; animation:none!important; }
+.action-toast-copy { display:grid; gap:2px; min-width:0; }
+.action-toast-copy strong { font:800 12px 'Manrope',sans-serif; letter-spacing:.01em; white-space:nowrap; }
+.action-toast-copy small { color:#cdbba8; font-size:11px; white-space:nowrap; }
+.has-service-selection .action-toast { left:24px; transform:translateY(18px) scale(.96); }
+.has-service-selection .action-toast.is-visible { transform:translateY(0) scale(1); }
+@keyframes action-spin { to { transform:rotate(360deg); } }
+@keyframes action-check { from { transform:scale(.45); opacity:0; } to { transform:scale(1); opacity:1; } }
+@media(max-width:680px) { .action-toast { bottom:max(17px,env(safe-area-inset-bottom)); padding-right:16px; } .has-service-selection .action-toast { left:50%; bottom:calc(94px + env(safe-area-inset-bottom)); transform:translate(-50%,18px) scale(.96); } .has-service-selection .action-toast.is-visible { transform:translate(-50%,0) scale(1); } .action-toast-copy small { max-width:240px; overflow:hidden; text-overflow:ellipsis; } }
+@media(prefers-reduced-motion:reduce) { .action-toast-icon::before, .button.is-busy > span::after, .header-cta.is-busy > span::after { animation:none; } }
