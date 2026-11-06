@@ -386,3 +386,42 @@ footer .brand-name { font-size:16px; }
 .mobile-booking-cta { display:none; }
 @media(max-width:900px) { .founder-layout { gap:45px; } .founder-photo { height:510px; } .founder h2 { font-size:clamp(75px,10vw,100px); } }
 @media(max-width:680px) { body:not(.booking-page) { padding-bottom:72px; } .founder { padding-top:80px; padding-bottom:88px; } .founder-layout { display:flex; flex-direction:column; align-items:stretch; gap:43px; } .founder-photo { width:calc(100% - 12px); height:490px; margin:0; box-shadow:12px 12px 0 #35271c; } .founder h2 { font-size:clamp(78px,22vw,105px); } .founder-role { margin-top:24px; } .founder-signature { font-size:23px; } .location-actions { align-items:flex-start; flex-direction:column; gap:12px; } .mobile-booking-cta { position:fixed; z-index:80; display:flex; align-items:center; justify-content:space-between; left:16px; right:16px; bottom:max(12px,env(safe-area-inset-bottom)); min-height:52px; padding:11px 12px 11px 20px; border:1px solid #dbb386; border-radius:999px; background:#201811; color:#f4e9da; box-shadow:0 10px 34px #0008; font:800 13px 'Manrope',sans-serif; } .mobile-booking-cta span { display:grid; place-items:center; width:29px; height:29px; border-radius:50%; background:#d8af7d; color:#281b10; font-size:18px; font-weight:500; } }
+
+/* Fotos da barbearia em passagem contínua */
+.space-gallery { display:block; width:100%; height:440px; margin:0; overflow:hidden; border:1px solid #806344; mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent); }
+.space-gallery-track { display:flex; width:max-content; height:100%; animation:gallery-drift 42s linear infinite; }
+.space-gallery-group { display:flex; flex:none; gap:12px; height:100%; padding-right:12px; }
+.space-gallery-group img,.space-gallery-group img:first-child { display:block; flex:none; grid-row:auto; width:290px; height:100%; object-fit:cover; object-position:center; filter:saturate(.78) contrast(1.08); }
+.space-gallery-group img:nth-child(2) { object-position:55% center; }
+.space-gallery:hover .space-gallery-track { animation-play-state:paused; }
+@keyframes gallery-drift { to { transform:translateX(-50%); } }
+@media(max-width:900px) { .space-gallery { height:390px; } .space-gallery-group img,.space-gallery-group img:first-child { width:245px; } }
+@media(max-width:680px) { .space-gallery { height:325px; margin-top:38px; } .space-gallery-group img,.space-gallery-group img:first-child { width:230px; } }
+
+/* Botões com a mesma linguagem visual e seta vetorial */
+.button,.header-cta,.service-selection-tray button { min-height:54px; border:1px solid #b58b60; font-family:'Manrope',sans-serif; font-weight:800; letter-spacing:.015em; }
+.button-dark,.booking-page .booking-actions .button-dark { background:#241a14; color:#f8ead9; }
+.button-dark:hover,.booking-page .booking-actions .button-dark:hover { background:#3b2a1d; color:#fff3e5; }
+.button-light,.space .button-dark,.founder .button-light,.final-cta .button-light { background:#d5a971; border-color:#d5a971; color:#251a11; }
+.button-light:hover,.space .button-dark:hover,.founder .button-light:hover,.final-cta .button-light:hover { background:#e7be88; border-color:#e7be88; color:#251a11; }
+.header-cta { background:rgba(25,18,13,.65); color:#f8ead9; border-color:#c9a174; }
+.header-cta:hover { background:#d5a971; color:#251a11; }
+.service-selection-tray button { background:#d5a971; color:#251a11; }
+.mobile-booking-cta { background:#241a14; border-color:#c9a174; color:#f8ead9; }
+.button > span,.header-cta > span,.service-selection-tray button > span,.mobile-booking-cta > span,.location-booking-link > span { font-size:0!important; line-height:0; }
+.button > span,.header-cta > span,.service-selection-tray button > span { flex:none; width:30px; height:30px; background:rgba(40,27,17,.14); }
+.button-dark > span,.header-cta > span { background:#d5a971; color:#251a11; }
+.button-light > span,.space .button-dark > span,.founder .button-light > span,.final-cta .button-light > span { background:rgba(40,27,17,.14); color:#251a11; }
+.mobile-booking-cta > span { background:#d5a971; color:#251a11; }
+.button > span::before,.header-cta > span::before,.service-selection-tray button > span::before,.mobile-booking-cta > span::before,.location-booking-link > span::before { content:''; display:block; width:15px; height:15px; background:currentColor; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 13 13 3M5 3h8v8' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 13 13 3M5 3h8v8' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat; }
+.button:hover > span,.header-cta:hover > span,.service-selection-tray button:hover > span { transform:none; }
+.button:hover > span::before,.header-cta:hover > span::before,.service-selection-tray button:hover > span::before,.mobile-booking-cta:hover > span::before { transform:translate(1px,-1px); }
+.button.is-busy > span::before,.header-cta.is-busy > span::before { display:none; }
+.location-booking-link > span { display:inline-grid; place-items:center; width:18px; height:18px; color:currentColor; }
+@media(max-width:680px) { .button { min-height:52px; } .mobile-booking-cta { min-height:54px; } }
+@media(prefers-reduced-motion:reduce) { .space-gallery { overflow-x:auto; mask-image:none; } .space-gallery-track { animation:none; } }
+
+/* Entradas discretas ao percorrer as seções */
+.will-reveal { transform:translateY(14px); transition:opacity .58s ease,transform .58s cubic-bezier(.22,.68,0,1); }
+.space-gallery.will-reveal,.founder-copy.will-reveal,.location-map.will-reveal { transition-delay:.08s; }
+@media(prefers-reduced-motion:reduce) { .will-reveal { opacity:1; transform:none; transition:none; } }
