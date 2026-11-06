@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#171411" />
+  <meta name="description" content="Escolha os serviços e personalize seu atendimento na Êxodo Barbearia." />
+  <title>Agendamento — Êxodo Barbearia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="booking.css" />
+</head>
+<body class="booking-page">
+  <header class="booking-page-header"><div class="wrap booking-page-header-inner"><a class="brand" href="index.html" aria-label="Voltar para a página inicial da Êxodo"><span class="brand-mark">Ê</span><span class="brand-name">ÊXODO <small>BARBEARIA</small></span></a><a class="booking-home-link" href="index.html">← Voltar ao início</a></div></header>
+  <main>
+    <section class="booking-section section" id="agendamento" aria-labelledby="booking-title"><div class="wrap"><div class="booking-heading"><div><div class="section-label">A EXPERIÊNCIA ÊXODO</div><h1 id="booking-title">Agende seu momento.</h1><p>Escolha seus serviços e monte sua experiência em poucos passos.</p></div><div class="booking-heading-mark" aria-hidden="true">Ê</div></div><div class="booking-shell"><nav class="booking-progress" aria-label="Etapas do agendamento"><button type="button" class="progress-step is-active" data-step-nav="1"><span>01</span> Serviços</button><button type="button" class="progress-step" data-step-nav="2"><span>02</span> Profissional</button><button type="button" class="progress-step" data-step-nav="3"><span>03</span> Data e horário</button><button type="button" class="progress-step" data-step-nav="4"><span>04</span> Seus dados</button><button type="button" class="progress-step" data-step-nav="5"><span>05</span> Revisão</button></nav><div class="booking-body"><div class="booking-main"><div id="booking-step-content" aria-live="polite"></div><div class="booking-actions"><button type="button" class="booking-back" id="booking-back">← Voltar</button><button type="button" class="button button-dark" id="booking-next">Continuar agendamento <span>↗</span></button></div><p class="booking-feedback" id="booking-feedback" role="status" aria-live="polite"></p></div><aside class="booking-summary" aria-label="Resumo do agendamento"><span class="summary-kicker">SEU AGENDAMENTO</span><div id="booking-summary-content"></div><div class="summary-total"><span>Total previsto</span><strong id="booking-total">R$ 0,00</strong></div><small>Valores sob consulta são informados no atendimento.</small></aside></div></div><p class="booking-page-note">Prévia visual do agendamento. A escolha de horário ainda não registra uma reserva.</p></div></section>
+  </main>
+  <footer><div class="wrap footer-inner"><a class="brand" href="index.html"><span class="brand-mark">Ê</span><span class="brand-name">ÊXODO <small>BARBEARIA</small></span></a><span>Maceió, Alagoas</span><a href="https://www.instagram.com/exodobarbearia_mcz/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><span>© 2026 Êxodo Barbearia</span></div></footer>
+  <script src="booking-config.js"></script>
+  <script src="booking.js"></script>
+</body>
+</html>
