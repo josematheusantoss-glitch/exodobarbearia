@@ -425,3 +425,14 @@ footer .brand-name { font-size:16px; }
 .will-reveal { transform:translateY(14px); transition:opacity .58s ease,transform .58s cubic-bezier(.22,.68,0,1); }
 .space-gallery.will-reveal,.founder-copy.will-reveal,.location-map.will-reveal { transition-delay:.08s; }
 @media(prefers-reduced-motion:reduce) { .will-reveal { opacity:1; transform:none; transition:none; } }
+
+/* Setas sem fundo, com contraste consistente em cada superfície */
+.header-cta { display:inline-flex; align-items:center; gap:12px; }
+.button > span,.button:hover > span,.header-cta > span,.header-cta:hover > span,.service-selection-tray button > span,.service-selection-tray button:hover > span,.mobile-booking-cta > span { display:inline-grid; place-items:center; flex:none; width:24px; height:24px; margin:0; border:0; border-radius:0; background:transparent; transform:none; }
+.button > span::before,.header-cta > span::before,.service-selection-tray button > span::before,.mobile-booking-cta > span::before { width:18px; height:18px; }
+.button-dark > span,.button-dark:hover > span,.booking-page .booking-actions .button-dark > span { color:#d5a971; }
+.button-light > span,.button-light:hover > span,.space .button-dark > span,.space .button-dark:hover > span,.founder .button-light > span,.final-cta .button-light > span,.service-selection-tray button > span { color:#241a14; }
+.header-cta > span,.mobile-booking-cta > span { color:#d5a971; }
+.header-cta:hover > span { color:#241a14; }
+.location-icon { background:transparent; color:#75502e; font-size:0; }
+.location-icon::before { content:''; display:block; width:20px; height:20px; background:currentColor; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 13 13 3M5 3h8v8' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 13 13 3M5 3h8v8' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat; }
